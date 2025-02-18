@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { quiz } from "../lib/static";
 import {
   isFillInBlankQuizField,
+  isMatchQuizField,
   isSelectQuizField,
   isTextQuizField,
   QuizField,
@@ -11,6 +12,7 @@ import {
 import TextQuiz from "./TextQuiz";
 import MultipleChoiceQuiz from "./MultipleChoiceQuiz";
 import FillInBlankQuiz from "./FillInBlankQuiz";
+import MatchQuiz from "./MatchQuiz";
 
 const answers: any[] = [];
 
@@ -22,28 +24,11 @@ const Quiz = () => {
   // console.log(answers);
   console.log(currentAnswer);
 
-  useEffect(() => {
-    //set to value at changed index in array, if undefined, reset to null
-    const valueAtCurrentIndex = answers[currentQuizIndex];
-    if (currentQuiz.type === "fillInBlank") {
-      setCurrentAnswer(
-        valueAtCurrentIndex === undefined
-          ? Array(currentQuiz.correctAnswer.length).fill("")
-          : valueAtCurrentIndex
-      );
-    } else {
-      setCurrentAnswer(
-        valueAtCurrentIndex === undefined ? "" : valueAtCurrentIndex
-      );
-    }
-  }, [currentQuizIndex]);
-
   function handleAnswerChange(ans: any) {
     setCurrentAnswer(ans);
   }
 
-  function handleNext() {
-    if (currentQuizIndex === quizFields.length - 1) return;
+  function onNewQuiz() {
     //save current ans to array
     answers[currentQuizIndex] = currentAnswer;
 
@@ -51,55 +36,33 @@ const Quiz = () => {
     const newAnswer = answers[currentQuizIndex + 1];
     const newQuiz = quizFields[currentQuizIndex + 1];
     if (newAnswer === undefined) {
-      if (newQuiz.type === "fillInBlank") {
+      if (isFillInBlankQuizField(newQuiz)) {
         setCurrentAnswer(Array(newQuiz.correctAnswer.length).fill(""));
+      } else if (isMatchQuizField(newQuiz)) {
+        setCurrentAnswer({
+          answerables: newQuiz.correctAnswer.map((item) => item[0]),
+          actualAnswers: newQuiz.correctAnswer.map((item) => ["", item[1]]),
+        });
       } else {
         setCurrentAnswer("");
       }
     } else {
       setCurrentAnswer(newAnswer);
     }
+  }
+
+  function handleNext() {
+    if (currentQuizIndex === quizFields.length - 1) return;
+    onNewQuiz();
     //
     setCurrentQuizIndex((prev) => prev + 1);
   }
 
   function handlePrev() {
     if (currentQuizIndex === 0) return;
-    //save current ans to array
-    answers[currentQuizIndex] = currentAnswer;
-
-    //set next quiz's currentAnswer value
-    const newAnswer = answers[currentQuizIndex - 1];
-    const newQuiz = quizFields[currentQuizIndex - 1];
-    if (newAnswer === undefined) {
-      if (newQuiz.type === "fillInBlank") {
-        setCurrentAnswer(Array(newQuiz.correctAnswer.length).fill(""));
-      } else {
-        setCurrentAnswer("");
-      }
-    } else {
-      setCurrentAnswer(newAnswer);
-    }
+    onNewQuiz();
     //
     setCurrentQuizIndex((prev) => prev - 1);
-  }
-
-  function changeQuizIndex(action: "next" | "prev") {
-    switch (action) {
-      case "next":
-        if (currentQuizIndex !== quizFields.length - 1) {
-          //change the index
-        }
-        break;
-      case "prev":
-        if (currentQuizIndex !== 0) {
-          //change the index
-          setCurrentQuizIndex((prev) => prev - 1);
-        }
-        break;
-      default:
-        break;
-    }
   }
 
   return (
@@ -150,6 +113,14 @@ function renderQuiz(
   } else if (isFillInBlankQuizField(currentQuiz)) {
     return (
       <FillInBlankQuiz
+        quizField={currentQuiz}
+        handleAnswerChange={handleAnswerChange}
+        currentAnswer={currentAnswer}
+      />
+    );
+  } else if (isMatchQuizField(currentQuiz)) {
+    return (
+      <MatchQuiz
         quizField={currentQuiz}
         handleAnswerChange={handleAnswerChange}
         currentAnswer={currentAnswer}

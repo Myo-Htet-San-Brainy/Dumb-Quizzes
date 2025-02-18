@@ -103,5 +103,15 @@ export const quiz: Quiz = {
       type: "fillInBlank",
       correctAnswer: "Attack On Titan",
     },
+    {
+      id: uuidv4(),
+      question: "Match words with meaning",
+      type: "match",
+      correctAnswer: [
+        ["milk", "from cow"],
+        ["almond milk", "from almond"],
+        ["water", "from earth"],
+      ],
+    },
   ],
 };

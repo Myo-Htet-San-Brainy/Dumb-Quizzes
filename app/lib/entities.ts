@@ -8,11 +8,22 @@ export interface NodeData {
 export interface BaseQuizField {
   id: string;
   question: string;
-  correctAnswer: string;
+}
+
+export interface MatchQuizField extends BaseQuizField {
+  type: "match";
+  correctAnswer: any[];
+}
+
+export function isMatchQuizField(
+  quizField: QuizField
+): quizField is MatchQuizField {
+  return quizField.type === "match";
 }
 
 export interface TextQuizField extends BaseQuizField {
   type: "text";
+  correctAnswer: string;
 }
 
 export function isTextQuizField(
@@ -29,6 +40,7 @@ export interface Option {
 export interface SelectQuizField extends BaseQuizField {
   type: "multipleChoice";
   options: Option[];
+  correctAnswer: string;
 }
 
 export function isSelectQuizField(
@@ -39,6 +51,7 @@ export function isSelectQuizField(
 
 export interface FillInBlankQuizField extends BaseQuizField {
   type: "fillInBlank";
+  correctAnswer: string;
 }
 
 export function isFillInBlankQuizField(
@@ -52,4 +65,8 @@ export interface Quiz {
   quizFields: QuizField[];
 }
 
-export type QuizField = TextQuizField | SelectQuizField | FillInBlankQuizField;
+export type QuizField =
+  | TextQuizField
+  | SelectQuizField
+  | FillInBlankQuizField
+  | MatchQuizField;
