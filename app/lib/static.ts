@@ -97,5 +97,11 @@ export const quiz: Quiz = {
         },
       ],
     },
+    {
+      id: uuidv4(),
+      question: "_____ is best anime.",
+      type: "fillInBlank",
+      correctAnswer: "Attack On Titan",
+    },
   ],
 };

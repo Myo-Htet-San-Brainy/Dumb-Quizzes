@@ -37,9 +37,19 @@ export function isSelectQuizField(
   return quizField.type === "multipleChoice";
 }
 
+export interface FillInBlankQuizField extends BaseQuizField {
+  type: "fillInBlank";
+}
+
+export function isFillInBlankQuizField(
+  quizField: QuizField
+): quizField is FillInBlankQuizField {
+  return quizField.type === "fillInBlank";
+}
+
 export interface Quiz {
   title: string;
   quizFields: QuizField[];
 }
 
-export type QuizField = TextQuizField | SelectQuizField;
+export type QuizField = TextQuizField | SelectQuizField | FillInBlankQuizField;
