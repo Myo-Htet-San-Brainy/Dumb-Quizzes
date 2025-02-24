@@ -13,6 +13,7 @@ export interface BaseQuizField {
 export interface MatchQuizField extends BaseQuizField {
   type: "match";
   correctAnswer: any[];
+  currentAnswer?: any[];
 }
 
 export function isMatchQuizField(
@@ -24,6 +25,7 @@ export function isMatchQuizField(
 export interface TextQuizField extends BaseQuizField {
   type: "text";
   correctAnswer: string;
+  currentAnswer?: string;
 }
 
 export function isTextQuizField(
@@ -41,6 +43,7 @@ export interface SelectQuizField extends BaseQuizField {
   type: "multipleChoice";
   options: Option[];
   correctAnswer: string;
+  currentAnswer?: string;
 }
 
 export function isSelectQuizField(
@@ -52,12 +55,25 @@ export function isSelectQuizField(
 export interface FillInBlankQuizField extends BaseQuizField {
   type: "fillInBlank";
   correctAnswer: string;
+  currentAnswer?: string[];
 }
 
 export function isFillInBlankQuizField(
   quizField: QuizField
 ): quizField is FillInBlankQuizField {
   return quizField.type === "fillInBlank";
+}
+
+export interface ReOrderQuizField extends BaseQuizField {
+  type: "reOrder";
+  correctAnswer: any[];
+  currentAnswer?: any[];
+}
+
+export function isReOrderQuizField(
+  quizField: QuizField
+): quizField is ReOrderQuizField {
+  return quizField.type === "reOrder";
 }
 
 export interface Quiz {
@@ -69,4 +85,5 @@ export type QuizField =
   | TextQuizField
   | SelectQuizField
   | FillInBlankQuizField
-  | MatchQuizField;
+  | MatchQuizField
+  | ReOrderQuizField;

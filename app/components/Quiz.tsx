@@ -3,6 +3,7 @@ import { quiz } from "../lib/static";
 import {
   isFillInBlankQuizField,
   isMatchQuizField,
+  isReOrderQuizField,
   isSelectQuizField,
   isTextQuizField,
   QuizField,
@@ -13,61 +14,69 @@ import TextQuiz from "./TextQuiz";
 import MultipleChoiceQuiz from "./MultipleChoiceQuiz";
 import FillInBlankQuiz from "./FillInBlankQuiz";
 import MatchQuiz from "./MatchQuiz";
-
-const answers: any[] = [];
+import { shuffleArray } from "../lib/utils";
+import { useStore } from "../lib/globalState";
 
 const Quiz = () => {
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
-  const { quizFields } = quiz;
+  const { quizFields, changeCurrentAnswer } = useStore();
   const currentQuiz = quizFields[currentQuizIndex];
-  const [currentAnswer, setCurrentAnswer] = useState<any>("");
-  // console.log(answers);
-  console.log(currentAnswer);
 
-  function handleAnswerChange(ans: any) {
-    setCurrentAnswer(ans);
-  }
+  console.log(useStore.getState());
 
-  function onNewQuiz() {
-    //save current ans to array
-    answers[currentQuizIndex] = currentAnswer;
-
-    //set next quiz's currentAnswer value
-    const newAnswer = answers[currentQuizIndex + 1];
-    const newQuiz = quizFields[currentQuizIndex + 1];
-    if (newAnswer === undefined) {
-      if (isFillInBlankQuizField(newQuiz)) {
-        setCurrentAnswer(Array(newQuiz.correctAnswer.length).fill(""));
-      } else if (isMatchQuizField(newQuiz)) {
-        setCurrentAnswer({
-          answerables: newQuiz.correctAnswer.map((item) => item[0]),
-          actualAnswers: newQuiz.correctAnswer.map((item) => ["", item[1]]),
-        });
+  useEffect(() => {
+    if (!currentQuiz.currentAnswer) {
+      if (isFillInBlankQuizField(currentQuiz)) {
+        changeCurrentAnswer(
+          currentQuiz.id,
+          Array(currentQuiz.correctAnswer.length).fill("")
+        );
+      } else if (isMatchQuizField(currentQuiz)) {
+        const defaultCurrAns = shuffleArray(
+          currentQuiz.correctAnswer
+            .map((item, index) => {
+              return [
+                [item[0], `droppable-${index}`],
+                ["", item[1]],
+              ];
+            })
+            .flat()
+        );
+        changeCurrentAnswer(currentQuiz.id, defaultCurrAns);
+      } else if (isReOrderQuizField(currentQuiz)) {
+        let firstArr = currentQuiz.correctAnswer.map(
+          (item: string[], index) => {
+            return [item[0], `droppable-${index}`];
+          }
+        );
+        firstArr = shuffleArray(firstArr);
+        const secondArr = currentQuiz.correctAnswer.map(
+          (item: string[], index) => {
+            return ["", item[1]];
+          }
+        );
+        changeCurrentAnswer(currentQuiz.id, [...firstArr, ...secondArr]);
       } else {
-        setCurrentAnswer("");
+        changeCurrentAnswer(currentQuiz.id, "");
       }
-    } else {
-      setCurrentAnswer(newAnswer);
     }
-  }
+  }, [currentQuizIndex]);
 
   function handleNext() {
     if (currentQuizIndex === quizFields.length - 1) return;
-    onNewQuiz();
     //
     setCurrentQuizIndex((prev) => prev + 1);
   }
 
   function handlePrev() {
     if (currentQuizIndex === 0) return;
-    onNewQuiz();
     //
     setCurrentQuizIndex((prev) => prev - 1);
   }
 
   return (
     <div>
-      {renderQuiz(currentQuiz, handleAnswerChange, currentAnswer)}
+      {renderQuiz(currentQuiz)}
       {/* PREV AND NEXT BTNS */}
       {currentQuizIndex === quizFields.length - 1 ? (
         false
@@ -89,42 +98,17 @@ const Quiz = () => {
 
 export default Quiz;
 
-function renderQuiz(
-  currentQuiz: QuizField,
-  handleAnswerChange: (ans: any) => void,
-  currentAnswer: any
-) {
+//can use a mapping dict for further refactoring
+function renderQuiz(currentQuiz: QuizField) {
   if (isTextQuizField(currentQuiz)) {
-    return (
-      <TextQuiz
-        quizField={currentQuiz}
-        handleAnswerChange={handleAnswerChange}
-        currentAnswer={currentAnswer}
-      />
-    );
+    return <TextQuiz quizField={currentQuiz} />;
   } else if (isSelectQuizField(currentQuiz)) {
-    return (
-      <MultipleChoiceQuiz
-        quizField={currentQuiz}
-        handleAnswerChange={handleAnswerChange}
-        currentAnswer={currentAnswer}
-      />
-    );
+    return <MultipleChoiceQuiz quizField={currentQuiz} />;
   } else if (isFillInBlankQuizField(currentQuiz)) {
-    return (
-      <FillInBlankQuiz
-        quizField={currentQuiz}
-        handleAnswerChange={handleAnswerChange}
-        currentAnswer={currentAnswer}
-      />
-    );
+    return <FillInBlankQuiz quizField={currentQuiz} />;
   } else if (isMatchQuizField(currentQuiz)) {
-    return (
-      <MatchQuiz
-        quizField={currentQuiz}
-        handleAnswerChange={handleAnswerChange}
-        currentAnswer={currentAnswer}
-      />
-    );
+    return <MatchQuiz quizField={currentQuiz} />;
+  } else if (isReOrderQuizField(currentQuiz)) {
+    return <h1>{currentQuiz.currentAnswer}</h1>;
   }
 }

@@ -61,18 +61,7 @@ export const quiz: Quiz = {
       type: "text",
       correctAnswer: "correct answer",
     },
-    {
-      id: uuidv4(),
-      question: "q 2",
-      type: "text",
-      correctAnswer: "correct answer",
-    },
-    {
-      id: uuidv4(),
-      question: "q 3",
-      type: "text",
-      correctAnswer: "correct answer",
-    },
+
     {
       id: uuidv4(),
       question: "q 4",
@@ -111,6 +100,17 @@ export const quiz: Quiz = {
         ["milk", "from cow"],
         ["almond milk", "from almond"],
         ["water", "from earth"],
+        ["dog", "from dog mama"],
+      ],
+    },
+    {
+      id: uuidv4(),
+      question: "Reorder from largest to smallest",
+      type: "reOrder",
+      correctAnswer: [
+        ["Russia", "3"],
+        ["Poland", "2"],
+        ["Singapore", "1"],
       ],
     },
   ],

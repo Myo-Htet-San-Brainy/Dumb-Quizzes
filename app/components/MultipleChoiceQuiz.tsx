@@ -1,16 +1,14 @@
 import React from "react";
 import { SelectQuizField } from "../lib/entities";
+import { useStore } from "../lib/globalState";
 
 interface MultipleChoiceQuizProps {
   quizField: SelectQuizField;
-  handleAnswerChange: (ans: string) => void;
-  currentAnswer: any;
 }
 const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({
   quizField,
-  handleAnswerChange,
-  currentAnswer,
 }) => {
+  const { changeCurrentAnswer } = useStore();
   return (
     <div>
       <h1>{quizField.question}</h1>
@@ -24,8 +22,8 @@ const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({
             type="radio"
             name="quiz"
             // value={option.id}
-            checked={currentAnswer === option.id}
-            onChange={() => handleAnswerChange(option.id)}
+            checked={quizField.currentAnswer === option.id}
+            onChange={() => changeCurrentAnswer(quizField.id, option.id)}
             className="w-5 h-5 cursor-pointer"
           />
           {/* Option Text */}
