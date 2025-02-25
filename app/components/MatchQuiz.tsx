@@ -1,11 +1,11 @@
 import React from "react";
 import { quiz } from "../lib/static";
-import { MatchQuizField } from "../lib/entities";
+import { MatchQuizField, ReOrderQuizField } from "../lib/entities";
 import Draggable from "./Draggable";
 import { useStore } from "../lib/globalState";
 
 interface MatchQuizProps {
-  quizField: MatchQuizField;
+  quizField: MatchQuizField | ReOrderQuizField;
 }
 
 const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {

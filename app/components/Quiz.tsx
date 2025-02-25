@@ -106,9 +106,10 @@ function renderQuiz(currentQuiz: QuizField) {
     return <MultipleChoiceQuiz quizField={currentQuiz} />;
   } else if (isFillInBlankQuizField(currentQuiz)) {
     return <FillInBlankQuiz quizField={currentQuiz} />;
-  } else if (isMatchQuizField(currentQuiz)) {
+  } else if (isMatchQuizField(currentQuiz) || isReOrderQuizField(currentQuiz)) {
     return <MatchQuiz quizField={currentQuiz} />;
-  } else if (isReOrderQuizField(currentQuiz)) {
-    return <h1>{currentQuiz.currentAnswer}</h1>;
   }
+  // else if (isReOrderQuizField(currentQuiz)) {
+  //   return <MatchQuiz quizField={currentQuiz} />;
+  // }
 }
