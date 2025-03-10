@@ -10,6 +10,8 @@ import { useStore } from "@/app/lib/globalState";
 
 const Home = () => {
   const [isStart, setIsStart] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+  const [isError, setIsError] = useState(false);
   const { quizId } = useParams<{ quizId: string }>();
   const router = useRouter();
   const { setQuiz } = useStore();
@@ -18,7 +20,9 @@ const Home = () => {
   useEffect(() => {
     async function fetchQuiz() {
       //fetch quiz data > toast > navigate to home
+      setIsFetching(true);
       const res = await fetch(`http://localhost:3001/api/${quizId}`);
+      setIsFetching(false);
       const jsonRes = await res.json();
       if (res.status !== 200) {
         toast(jsonRes.error);
@@ -31,11 +35,23 @@ const Home = () => {
         title: jsonRes.data.title,
       });
     }
-    fetchQuiz();
+    try {
+      fetchQuiz();
+    } catch (error) {
+      setIsFetching(false);
+      setIsError(true);
+    }
   }, []);
 
   function changeQuizStart(startState: boolean) {
     setIsStart(startState);
+  }
+
+  if (isFetching) {
+    return <div>loading</div>;
+  }
+  if (isError) {
+    return <div>error</div>;
   }
 
   return (

@@ -12,8 +12,8 @@ export interface BaseQuizField {
 
 export interface MatchQuizField extends BaseQuizField {
   type: "match";
-  correctAnswer: any[];
-  currentAnswer?: any[];
+  correctAnswer: string[][]; //[['milk', 'from cow'], ['water', 'from earth']]
+  currentAnswer?: string[][]; //[['milk', 'droppable-1'], ['water', 'droppable-2'], ['', 'from cow'], ['', 'from earth']]
 }
 
 export function isMatchQuizField(
@@ -87,3 +87,25 @@ export type QuizField =
   | FillInBlankQuizField
   | MatchQuizField
   | ReOrderQuizField;
+
+export interface FillInBlankQuizFieldResult extends FillInBlankQuizField {
+  status: boolean;
+}
+
+export interface TextQuizFieldResult extends TextQuizField {
+  status: boolean;
+}
+
+export interface SelectQuizFieldResult extends SelectQuizField {
+  status: boolean;
+}
+
+export interface MatchQuizFieldResult extends MatchQuizField {
+  status: boolean;
+}
+
+export type QuizResult =
+  | FillInBlankQuizField
+  | TextQuizFieldResult
+  | SelectQuizFieldResult
+  | MatchQuizFieldResult;

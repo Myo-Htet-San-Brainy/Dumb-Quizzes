@@ -4,10 +4,10 @@ import { ObjectId } from "mongodb";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { quizId: string } }
+  { params }: { params: Promise<{ quizId: string }> }
 ) {
   try {
-    const { quizId } = params;
+    const { quizId } = await params;
 
     // Validate quizId format
     if (!quizId || !ObjectId.isValid(quizId)) {

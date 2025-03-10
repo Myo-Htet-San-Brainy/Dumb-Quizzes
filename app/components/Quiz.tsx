@@ -16,21 +16,26 @@ import FillInBlankQuiz from "./FillInBlankQuiz";
 import MatchQuiz from "./MatchQuiz";
 import { shuffleArray } from "../lib/utils";
 import { useStore } from "../lib/globalState";
+import Link from "next/link";
 
 const Quiz = () => {
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const { quizFields, changeCurrentAnswer } = useStore();
   const currentQuiz = quizFields[currentQuizIndex];
+  const isLastQuiz = quizFields.length - 1 === currentQuizIndex;
 
   console.log(useStore.getState());
 
   useEffect(() => {
     if (!currentQuiz.currentAnswer) {
       if (isFillInBlankQuizField(currentQuiz)) {
-        changeCurrentAnswer(
-          currentQuiz.id,
-          Array(currentQuiz.correctAnswer.length).fill("")
-        );
+        const defaultCurrAns = [...currentQuiz.correctAnswer].map((char) => {
+          if (char === " ") {
+            return " ";
+          }
+          return "";
+        });
+        changeCurrentAnswer(currentQuiz.id, defaultCurrAns);
       } else if (isMatchQuizField(currentQuiz)) {
         const defaultCurrAns = shuffleArray(
           currentQuiz.correctAnswer
@@ -76,6 +81,8 @@ const Quiz = () => {
 
   return (
     <div>
+      {isLastQuiz && <Link href={"/result"}>Finish</Link>}
+      {/* QUIZES */}
       {renderQuiz(currentQuiz)}
       {/* PREV AND NEXT BTNS */}
       {currentQuizIndex === quizFields.length - 1 ? (
