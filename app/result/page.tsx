@@ -8,19 +8,24 @@ import {
   isFillInBlankQuizField,
   isMatchQuizField,
   isSelectQuizField,
+  isTextQuizField,
   MatchQuizField,
   MatchQuizFieldResult,
   QuizField,
   SelectQuizField,
   SelectQuizFieldResult,
+  TextQuizField,
+  TextQuizFieldResult,
 } from "../lib/entities";
 import FillInBlankResult from "../components/FillInBlankResult";
 import SelectResult from "../components/SelectResult";
 import MatchResult from "../components/MatchQuizResult";
+import { ratio } from "fuzzball";
+import TextQuizResult from "../components/TextQuizResult";
 
 const Result = () => {
   const { quizFields } = useStore();
-  console.log(useStore.getState());
+  // console.log(useStore.getState());
 
   return (
     <div>
@@ -40,6 +45,8 @@ function checkAndRenderResult(quizField: QuizField): any {
     return <FillInBlankResult {...checkFillInBlankQuizAnswer(quizField)} />;
   } else if (isMatchQuizField(quizField)) {
     return <MatchResult {...checkMatchQuizAnswer(quizField)} />;
+  } else if (isTextQuizField(quizField)) {
+    return <TextQuizResult {...checkTextQuizAnswer(quizField)} />;
   }
 }
 
@@ -85,4 +92,14 @@ function checkMatchQuizAnswer(matchQuiz: MatchQuizField): MatchQuizFieldResult {
     }
   }
   return { ...matchQuiz, status };
+}
+
+function checkTextQuizAnswer(textQuiz: TextQuizField): TextQuizFieldResult {
+  let status = false;
+  const correctnessVal = ratio(
+    textQuiz.correctAnswer,
+    textQuiz.currentAnswer as string
+  );
+  status = correctnessVal > 80;
+  return { ...textQuiz, status };
 }
