@@ -23,7 +23,7 @@ const Home = () => {
     async function fetchQuiz() {
       //fetch quiz data > toast > navigate to home
       setIsFetching(true);
-      const res = await fetch(`http://localhost:3001/api/${quizId}`);
+      const res = await fetch(`/api/${quizId}`);
       setIsFetching(false);
       const jsonRes = await res.json();
       if (res.status !== 200) {

@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
-import { idToLink } from "../lib/utils";
+
 import { useRouter } from "next/navigation";
 
 const JoinQuiz = () => {
@@ -15,7 +15,7 @@ const JoinQuiz = () => {
     //validation here
 
     if (isPlainCode) {
-      router.push(idToLink(input));
+      router.push(`/play/${input}`);
     } else {
       router.push(input);
     }
