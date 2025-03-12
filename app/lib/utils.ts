@@ -8,3 +8,8 @@ export function shuffleArray(array: any[]) {
 
 const arr = [1, 2, 3, 4, 5];
 // console.log(shuffleArray(arr));
+
+const quizPreviewAppBaseUrl = "http://localhost:3001/play";
+export function idToLink(id: string) {
+  return `${quizPreviewAppBaseUrl}/${id}`;
+}

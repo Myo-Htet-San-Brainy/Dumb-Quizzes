@@ -91,7 +91,9 @@ const Draggable: React.FC<{
       data-is-draggable="true"
       id={draggableId}
       onMouseDown={handleMouseDown}
-      className={"h-full  bg-amber-200 cursor-move select-none " + className}
+      className={
+        "h-full rounded-md  bg-indigo-600 cursor-move select-none " + className
+      }
       style={{
         // position: "absolute",
         transform: `translate(${distanceToMove.x}px, ${distanceToMove.y}px)`,

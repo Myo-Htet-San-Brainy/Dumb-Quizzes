@@ -19,7 +19,7 @@ const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {
   return (
     <div className="space-y-4">
       <h1>{quizField.question}</h1>
-      {/* droppable fields, each having a draggable */}
+      {/* filler droppable fields, */}
       <div className="flex gap-5">
         {quizField.currentAnswer?.map((item: any, i: number) => {
           if (item[1].startsWith("droppable-")) {
@@ -27,7 +27,7 @@ const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {
               return (
                 <div
                   key={item[1]}
-                  className="grow h-28 p-2 bg-sky-200 "
+                  className="grow h-28 p-2 bg-gray-200 rounded-md"
                   data-is-dropzone="true"
                   id={item[1]}
                   style={dynamicDroppableStyle}
@@ -37,7 +37,7 @@ const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {
               return (
                 <div
                   key={item[1]}
-                  className={` h-28 p-2 bg-sky-200 `}
+                  className={` h-28 p-2 bg-gray-200 rounded-md`}
                   data-is-dropzone="true"
                   id={item[1]}
                   style={dynamicDroppableStyle}
@@ -48,7 +48,9 @@ const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {
                     currentAnswer={quizField.currentAnswer}
                     currentDropZoneId={item[1]}
                   >
-                    {item[0]}
+                    <div className="h-full flex items-center justify-center text-white">
+                      {item[0]}
+                    </div>
                   </Draggable>
                 </div>
               );
@@ -64,7 +66,7 @@ const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {
               return (
                 <div
                   key={item[1]}
-                  className="grow h-28 p-2 bg-sky-200"
+                  className="grow h-28 p-2 bg-gray-200 rounded-md text-center"
                   data-is-dropzone="true"
                   id={item[1]}
                   style={dynamicDroppableStyle}
@@ -76,7 +78,7 @@ const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {
               return (
                 <div
                   key={item[1]}
-                  className="grow h-28 p-2 bg-sky-200 flex flex-col"
+                  className="grow h-28 p-2 bg-gray-200 flex flex-col rounded-md text-center"
                   data-is-dropzone="true"
                   id={item[1]}
                   style={dynamicDroppableStyle}
@@ -88,7 +90,9 @@ const MatchQuiz: React.FC<MatchQuizProps> = ({ quizField }) => {
                     currentAnswer={quizField.currentAnswer}
                     currentDropZoneId={item[1]}
                   >
-                    {item[0]}
+                    <div className="h-full flex items-center justify-center text-white">
+                      {item[0]}
+                    </div>
                   </Draggable>
                 </div>
               );

@@ -28,10 +28,32 @@ const Result = () => {
   // console.log(useStore.getState());
 
   return (
-    <div>
-      {quizFields.map((quizField) => {
+    <div className="min-h-screen bg-gray-50 flex flex-col gap-10 ">
+      {/* Header */}
+      <header className="bg-indigo-600 text-white shadow-lg">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center">
+            <svg
+              className="h-8 w-8 mr-2"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M9.5 16.5v-9l7 4.5-7 4.5z" />
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z" />
+            </svg>
+            <h1 className="text-2xl font-bold">QuizMaster</h1>
+          </div>
+        </div>
+      </header>
+      {quizFields?.map((quizField) => {
         return checkAndRenderResult(quizField);
       })}
+      {/* Footer */}
+      <footer className="bg-gray-800 text-gray-300 py-6 mt-20">
+        <div className="container mx-auto px-4 text-center">
+          <p>&copy; 2025 QuizMaster. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };
@@ -94,12 +116,14 @@ function checkMatchQuizAnswer(matchQuiz: MatchQuizField): MatchQuizFieldResult {
   return { ...matchQuiz, status };
 }
 
+const correctThreshold = 80;
 function checkTextQuizAnswer(textQuiz: TextQuizField): TextQuizFieldResult {
   let status = false;
+
   const correctnessVal = ratio(
     textQuiz.correctAnswer,
     textQuiz.currentAnswer as string
   );
-  status = correctnessVal > 80;
+  status = correctnessVal > correctThreshold;
   return { ...textQuiz, status };
 }

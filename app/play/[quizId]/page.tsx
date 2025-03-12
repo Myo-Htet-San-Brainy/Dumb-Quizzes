@@ -7,6 +7,8 @@ import Initial from "../../components/Initial";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useStore } from "@/app/lib/globalState";
+import { Loading } from "@/app/components/Loading";
+import { ErrorComponent } from "@/app/components/Error";
 
 const Home = () => {
   const [isStart, setIsStart] = useState(false);
@@ -48,10 +50,10 @@ const Home = () => {
   }
 
   if (isFetching) {
-    return <div>loading</div>;
+    return <Loading />;
   }
   if (isError) {
-    return <div>error</div>;
+    return <ErrorComponent />;
   }
 
   return (

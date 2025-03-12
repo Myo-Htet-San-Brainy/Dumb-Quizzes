@@ -60,58 +60,7 @@ export const quiz: Quiz = {
       question: "q 1",
       type: "text",
       correctAnswer: "correct answer",
-    },
-
-    {
-      id: uuidv4(),
-      question: "q 4",
-      type: "multipleChoice",
-      correctAnswer: "1",
-      options: [
-        {
-          id: "1",
-          value: "a choice",
-        },
-        {
-          id: uuidv4(),
-          value: "a choice",
-        },
-        {
-          id: uuidv4(),
-          value: "a choice",
-        },
-        {
-          id: uuidv4(),
-          value: "a choice",
-        },
-      ],
-    },
-    {
-      id: uuidv4(),
-      question: "_____ is best anime.",
-      type: "fillInBlank",
-      correctAnswer: "Attack On Titan",
-    },
-    {
-      id: uuidv4(),
-      question: "Match words with meaning",
-      type: "match",
-      correctAnswer: [
-        ["milk", "from cow"],
-        ["almond milk", "from almond"],
-        ["water", "from earth"],
-        ["dog", "from dog mama"],
-      ],
-    },
-    {
-      id: uuidv4(),
-      question: "Reorder from largest to smallest",
-      type: "reOrder",
-      correctAnswer: [
-        ["Russia", "3"],
-        ["Poland", "2"],
-        ["Singapore", "1"],
-      ],
+      currentAnswer: "correct answer",
     },
   ],
 };

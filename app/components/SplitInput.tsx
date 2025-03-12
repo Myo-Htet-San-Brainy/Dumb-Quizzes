@@ -79,29 +79,25 @@ const SplitInput = ({
   }
   // console.log("nonSpaceIdsCounter", nonSpaceIdsCounter);
   return (
-    <div className=" flex gap-1">
+    <div className="flex gap-2">
       {currentAnswer?.map((char: any, i: number) => {
         if (char !== " ") {
           nonSpaceIdsCounter += 1;
           const temp = nonSpaceIdsCounter;
-          // console.log(
-          //   "nonSpaceIdsCounter before assigning",
-          //   nonSpaceIdsCounter
-          // );
           return (
             <input
               ref={(el) => {
                 inputsRef.current[temp] = el;
               }}
               key={i}
-              className="border border-black w-5 h-5"
+              className="w-10 h-10 text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               value={proxyAnswer?.[temp] || ""}
               onKeyDown={(e) => handleKeydown(e, temp)}
               onChange={(e) => handleCharChange(e, temp)}
             />
           );
         } else {
-          return <div key={i} className="w-5"></div>;
+          return <div key={i} className="w-10"></div>;
         }
       })}
     </div>
